@@ -8,7 +8,7 @@ import pandas as pd # Giữ lại import pandas nếu bạn vẫn dùng CSV tron
 # --- Cấu hình ứng dụng ---
 # Sử dụng layout="wide" có thể không cần thiết nữa khi có CSS tùy chỉnh
 st.set_page_config(page_title="INNO HR Chatbot", page_icon="🤖")
-# st.title("🤖 Beta App Hỏi Đáp Nhân Sự INNO") # Tiêu đề có thể ẩn đi để giống chat hơn
+st.title("🤖 TRỢ LÝ ẢO (BETA) GIẢI ĐÁP THÔNG TIN NHÂN SỰ INNO") # Tiêu đề có thể ẩn đi để giống chat hơn
 # st.caption("Hỏi đáp dựa trên dữ liệu nội bộ (JSON)") # Caption có thể ẩn
 
 # --- CSS tùy chỉnh để cố định ô nhập liệu ở cuối ---
