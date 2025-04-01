@@ -93,7 +93,7 @@ except Exception as e:
     st.stop()
 
 # --- Khởi tạo Model AI ---
-MODEL_NAME = "gemini-2.0-flash" # Đổi lại model công khai, ổn định
+MODEL_NAME = "gemini-2.5-pro-exp-03-25" # Đổi lại model công khai, ổn định
 try:
     safety_settings = [
         {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
