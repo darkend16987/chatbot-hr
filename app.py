@@ -149,25 +149,32 @@ user_question = st.text_input(
 if user_question:
     # 1. Thêm câu hỏi của người dùng vào lịch sử và hiển thị ngay lập tức
     # Kiểm tra xem tin nhắn cuối cùng có phải là câu hỏi này không để tránh lặp lại khi rerun
+    # ----- SỬA LỖI: TOÀN BỘ LOGIC BÊN DƯỚI PHẢI NẰM TRONG KHỐI IF NÀY -----
     if not st.session_state.messages or st.session_state.messages[-1].get("content") != user_question:
         st.session_state.messages.append({"role": "user", "content": user_question})
 
         # Hiển thị câu hỏi mới nhất trong container lịch sử
+        # ----- Thụt lề đúng -----
         with chat_container:
-             with st.chat_message("user"):
-                 st.markdown(user_question)
+            with st.chat_message("user"):
+                st.markdown(user_question)
 
-        # 2. Xây dựng prompt và gọi API
-        knowledge_base_string = json.dumps(knowledge_text, ensure_ascii=False, indent=2)  # Chuyển JSON thành chuỗi
+        # ----- Thụt lề đúng cho toàn bộ khối xử lý prompt và API -----
+        # 2. Xây dựng prompt
+        # Chuyển JSON thành chuỗi (lưu ý: indent=2 sẽ tốn nhiều token hơn indent=None)
+        knowledge_base_string = json.dumps(knowledge_text, ensure_ascii=False, indent=None) # <<< Sửa lại indent=None để tiết kiệm token
         full_prompt = f"{system_instruction_text}\n\nDưới đây là dữ liệu nhân sự:\n\n{knowledge_base_string}\n\nHãy trả lời câu hỏi sau:\n\"{user_question}\""
+
+        # ----- THÊM LẠI DÒNG BỊ THIẾU VÀ THỤT LỀ ĐÚNG -----
+        contents = [full_prompt]
 
         # 3. Gọi API và xử lý phản hồi
         try:
-            # Hiển thị spinner ngay dưới câu hỏi mới
+            # ----- Thụt lề đúng -----
             with chat_container:
                 with st.spinner(f"🔍 Đang tìm kiếm câu trả lời với {MODEL_NAME}..."):
                     response_stream = model.generate_content(
-                        contents,
+                        contents, # <<< Sử dụng biến contents đã định nghĩa
                         stream=True,
                         generation_config=generation_config
                     )
@@ -182,21 +189,26 @@ if user_question:
                             text_stream_placeholder.markdown(full_response + "▌") # Con trỏ nhấp nháy
                         text_stream_placeholder.markdown(full_response) # Hiển thị đầy đủ
 
-                # 5. Thêm câu trả lời đầy đủ vào lịch sử (sau khi stream xong)
-                st.session_state.messages.append({"role": "assistant", "content": full_response})
+            # 5. Thêm câu trả lời đầy đủ vào lịch sử (sau khi stream xong)
+            # ----- Thụt lề đúng -----
+            st.session_state.messages.append({"role": "assistant", "content": full_response})
 
-                # Xóa nội dung ô input bằng cách set lại key của nó trong session_state
-                # Cần thực hiện ở cuối để không gây rerun không mong muốn trước khi lưu state
-                # st.session_state.user_question_input = "" # Bỏ comment dòng này nếu muốn tự xóa input
-
-                # Chạy lại để cập nhật hiển thị lịch sử đầy đủ (tùy chọn, có thể hơi giật)
-                # st.rerun()
+            # Các dòng tùy chọn khác giữ nguyên thụt lề này
+            # st.session_state.user_question_input = ""
+            # st.rerun()
 
         except Exception as e:
+             # ----- Thụt lề đúng -----
             st.error(f"🚨 Đã xảy ra lỗi khi gọi Gemini API: {e}")
             print(f"Error calling Gemini API: {e}")
+
+# --- Không cần else cho if not st.session_state.messages... vì chỉ xử lý khi có câu hỏi MỚI ---
+
+# --- Khối elif này để xử lý khi ô input trống ---
+# elif not user_question: # Không cần thiết vì đã có xử lý hiển thị lịch sử ở trên
+#     pass
 
 # --- Thông tin thêm ---
 # Có thể không cần thiết nữa nếu giao diện tập trung vào chat
 # st.sidebar.markdown("---")
-# st.sidebar.caption("© 2025 - Beta App v0.6")
+# st.sidebar.caption("© 2025 - Beta App v0.7") # Cập nhật version
