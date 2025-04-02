@@ -101,7 +101,7 @@ Your process for handling and responding to inquiries is as follows:
 - Analyze and understand the question and the user's concern in natural language
 - (Important) Carefully check the information in the provided documents and extract all relevant and accurate details
 - Respond in natural language
-- Accept feedback if the response is incorrect and update the knowledge base accordingly
+- Accept feedback if the response is incorrect.
 """
 
 # --- Cấu hình tạo nội dung ---
@@ -158,8 +158,8 @@ if user_question:
                  st.markdown(user_question)
 
         # 2. Xây dựng prompt và gọi API
+        knowledge_base_string = json.dumps(knowledge_text, ensure_ascii=False, indent=2)  # Chuyển JSON thành chuỗi
         full_prompt = f"{system_instruction_text}\n\nDưới đây là dữ liệu nhân sự:\n\n{knowledge_base_string}\n\nHãy trả lời câu hỏi sau:\n\"{user_question}\""
-        contents = [full_prompt]
 
         # 3. Gọi API và xử lý phản hồi
         try:
