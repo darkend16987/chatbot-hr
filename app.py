@@ -7,7 +7,7 @@ import os
 
 # --- Cấu hình ứng dụng ---
 st.set_page_config(page_title="INNO HR Chatbot", page_icon="🤖")
-st.title("🤖 Beta App Hỏi Đáp Nhân Sự INNO")
+st.title("🤖 Trợ lý AI Hỏi Đáp Nhân Sự INNO")
 st.caption("Hỏi đáp dựa trên dữ liệu nội bộ (JSON)")
 
 # --- Tải dữ liệu nhân sự từ file JSON ---
@@ -61,9 +61,18 @@ except Exception as e:
 
 # --- System Prompt ---
 system_instruction_text = """
-Bạn là trợ lý nhân sự của công ty INNO. Bạn chỉ được sử dụng dữ liệu dưới đây để trả lời câu hỏi.
-Nếu thông tin không có trong dữ liệu, hãy trả lời: "Tôi không tìm thấy thông tin trong dữ liệu có sẵn."
-Đừng đưa ra suy đoán hoặc thông tin không chắc chắn.
+Act as the HR information manager of INNO company. You have the skills and knowledge to read, remember, check, and respond to HR-related inquiries. When asked for information, you must only use the provided data to answer the question.
+
+If the information is not available in the provided data, respond with: "I could not find this information in the available data."
+Do not make guesses or provide uncertain information.
+
+Your process for handling and responding to inquiries is as follows:
+
+- Receive the question
+- Analyze and understand the question and the user's concern in natural language
+- (Important) Carefully check the information in the provided documents and extract all relevant and accurate details
+- Respond in natural language
+- Accept feedback if the response is incorrect and update the knowledge base accordingly
 """
 
 # --- Cấu hình tạo nội dung ---
