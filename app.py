@@ -107,7 +107,7 @@ Your process for handling and responding to inquiries is as follows:
 # --- Cấu hình tạo nội dung ---
 generation_config = genai.types.GenerationConfig(
     response_mime_type="text/plain",
-    temperature=0.7  # Giữ nguyên nhiệt độ
+    temperature=0.5  # Giữ nguyên nhiệt độ
 )
 
 # --- Xử lý phản hồi dạng Stream ---
